@@ -36,5 +36,5 @@ var question_destination_match = [
 ];
 
 module.exports = {
-    global.questions = questions
+    questions = questions
 }
