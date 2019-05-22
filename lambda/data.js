@@ -1,4 +1,4 @@
-const questions = [
+module.exports.questions = [
     "Do you like hot spring?",
     "Do you want to drive?",
     "Is air quality important to you?",
@@ -12,7 +12,7 @@ const questions = [
     "Do you want to explore languages other than Chinese and English?"
 ];
 
-var destinations = [
+module.exports.destinations = [
     "Budapest",
     "Mexico City",
     "Hakone",
@@ -21,7 +21,7 @@ var destinations = [
     "Los Angeles"
 ]
 
-var question_destination_match = [
+module.exports.question_destination_match = [
     ["Budapest", "Hakone", "Taipei"],
     ["Mexico City", "Hakone", "Heidelberg", "Los Angeles"],
     ["Budapest", "Hakone", "Heidelberg"],
@@ -35,4 +35,4 @@ var question_destination_match = [
     ["Heidelberg", "Los Angeles"]
 ];
 
-module.exports.questions = questions
+// module.exports.questions = questions
