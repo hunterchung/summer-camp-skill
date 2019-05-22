@@ -17,7 +17,33 @@ const QuizIntentHandler = {
             .reprompt(question)
             .getResponse();
     }
-}
+};
+
+const YesIntentHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+            && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.YesIntent';
+    },
+    handle(handlerInput) {
+        var speechText = "Based on my calculation. You'll enjoy Hakone for your next vacation. Thanks for playing Qoo Quiz.";
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .getResponse();
+    }
+};
+
+const NoIntentHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+            && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.NoIntent';
+    },
+    handle(handlerInput) {
+        var speechText = "Based on my calculation. You'll enjoy Mexico City for your next vacation. Thanks for playing Qoo Quiz.";
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .getResponse();
+    }
+};
 
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
@@ -31,6 +57,7 @@ const LaunchRequestHandler = {
             .getResponse();
     }
 };
+
 const HelloWorldIntentHandler = {
     canHandle(handlerInput) {
         return handlerInput.requestEnvelope.request.type === 'IntentRequest'
