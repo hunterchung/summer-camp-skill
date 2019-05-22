@@ -118,7 +118,7 @@ const IntentReflectorHandler = {
     },
     handle(handlerInput) {
         const intentName = handlerInput.requestEnvelope.request.intent.name;
-        const speechText = `You just triggered ${intentName}`;
+        const speechText = `You just triggered ${intentName}. Do you forget to put the intent handler in Alexa Skill Builders?`;
 
         return handlerInput.responseBuilder
             .speak(speechText)
@@ -151,6 +151,8 @@ const ErrorHandler = {
 exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
         QuizIntentHandler,
+        YesIntentHandler,
+        NoIntentHandler,
         LaunchRequestHandler,
         HelloWorldIntentHandler,
         HelpIntentHandler,
