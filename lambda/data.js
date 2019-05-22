@@ -1,4 +1,4 @@
-var questions = [
+var global.questions = [
     "Do you like hot spring?",
     "Do you want to drive?",
     "Is air quality important to you?",
@@ -34,3 +34,7 @@ var question_destination_match = [
     ["Taipei", "Los Angeles"],
     ["Heidelberg", "Los Angeles"]
 ];
+
+module.exports = {
+    global.questions = questions
+}
