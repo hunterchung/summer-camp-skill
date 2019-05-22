@@ -10,7 +10,7 @@ const QuizIntentHandler = {
     },
     handle(handlerInput) {
         var question = 'abc';
-        var speechText = "Ok. Let's start it. ${question}";
+        var speechText = `Ok. Let's start it. ${question}`;
         return handlerInput.responseBuilder
             .speak(speechText)
             .reprompt(question)
