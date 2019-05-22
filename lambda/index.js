@@ -3,12 +3,27 @@
 // session persistence, api calls, and more.
 const Alexa = require('ask-sdk-core');
 
+const QuizIntentHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+            && handlerInput.requestEnvelope.request.intent.name === 'QuizIntent';
+    },
+    handle(handlerInput) {
+        var question = 'abc';
+        var speechText = "Ok. Let's start it. ${question}";
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .reprompt(question)
+            .getResponse();
+    }
+}
+
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
         return handlerInput.requestEnvelope.request.type === 'LaunchRequest';
     },
     handle(handlerInput) {
-        const speechText = 'Welcome, you can say Hello or Help. Which would you like to try?';
+        const speechText = 'Welcome to Qoo Quiz. I can find the best vacation destination for you. To start it, just say play game.';
         return handlerInput.responseBuilder
             .speak(speechText)
             .reprompt(speechText)
