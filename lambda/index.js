@@ -2,7 +2,7 @@
 // Please visit https://alexa.design/cookbook for additional examples on implementing slots, dialog management,
 // session persistence, api calls, and more.
 const Alexa = require('ask-sdk-core');
-const data = require('./data')
+let data = require('./data')
 
 const QuizIntentHandler = {
     canHandle(handlerInput) {
@@ -10,7 +10,7 @@ const QuizIntentHandler = {
             && handlerInput.requestEnvelope.request.intent.name === 'QuizIntent';
     },
     handle(handlerInput) {
-        var question = data.questions;
+        var question = data.questions[0];
         var speechText = `Ok. Let's start it. ${question}`;
         return handlerInput.responseBuilder
             .speak(speechText)
