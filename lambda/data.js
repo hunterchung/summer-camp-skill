@@ -35,6 +35,4 @@ var question_destination_match = [
     ["Heidelberg", "Los Angeles"]
 ];
 
-module.exports = {
-    questions = questions
-}
+module.exports.questions = questions
