@@ -1,4 +1,4 @@
-var global.questions = [
+const questions = [
     "Do you like hot spring?",
     "Do you want to drive?",
     "Is air quality important to you?",
