@@ -2,48 +2,7 @@
 // Please visit https://alexa.design/cookbook for additional examples on implementing slots, dialog management,
 // session persistence, api calls, and more.
 const Alexa = require('ask-sdk-core');
-let data = require('./data')
 
-const QuizIntentHandler = {
-    canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'QuizIntent';
-    },
-    handle(handlerInput) {
-        var question = data.questions[0];
-        var speechText = `Ok. Let's start it. ${question}`;
-        return handlerInput.responseBuilder
-            .speak(speechText)
-            .reprompt(question)
-            .getResponse();
-    }
-};
-
-const YesIntentHandler = {
-    canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.YesIntent';
-    },
-    handle(handlerInput) {
-        var speechText = "Based on my calculation. You'll enjoy Hakone for your next vacation. Thanks for playing Qoo Quiz.";
-        return handlerInput.responseBuilder
-            .speak(speechText)
-            .getResponse();
-    }
-};
-
-const NoIntentHandler = {
-    canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.NoIntent';
-    },
-    handle(handlerInput) {
-        var speechText = "Based on my calculation. You'll enjoy Mexico City for your next vacation. Thanks for playing Qoo Quiz.";
-        return handlerInput.responseBuilder
-            .speak(speechText)
-            .getResponse();
-    }
-};
 
 const LaunchRequestHandler = {
     canHandle(handlerInput) {

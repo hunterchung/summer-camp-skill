@@ -1,0 +1,19 @@
+{
+  "manifest": {
+    "apis": {
+      "custom": {
+        "endpoint": {
+          "uri": "arn:aws:lambda:us-east-1:261714406535:function:f7716564-d7c0-4be9-a4bc-edec4ad93bab:Release_0"
+        },
+        "interfaces": []
+      }
+    },
+    "publishingInformation": {
+      "locales": {
+        "en-US": {
+          "name": "Qoo Quiz"
+        }
+      }
+    }
+  }
+}
