@@ -10,7 +10,17 @@ const QuizIntentHandler = {
             && handlerInput.requestEnvelope.request.intent.name === 'QuizIntent';
     },
     handle(handlerInput) {
-        var question = data.questions[0];
+        let currentQuizCount = 0
+        let question = data.questions[currentQuizCount];
+        let attrs = handlerInput.attributesManager.sessionAttributes
+        attrs['game_state'] = 'STARTED'
+        attrs['quiz_count'] = currentQuizCount
+        let scores = {}
+        data.destinations.foreach(function(destination){
+            scores[destination] = 0
+        })
+        attrs['scores'] = scores
+        
         var speechText = `Ok. Let's start it. ${question}`;
         return handlerInput.responseBuilder
             .speak(speechText)
