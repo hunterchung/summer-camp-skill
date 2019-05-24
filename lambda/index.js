@@ -4,7 +4,7 @@
 const Alexa = require('ask-sdk-core');
 let data = require('./data')
 
-const MAX_QUESTION_COUNT = 3;
+const MAX_QUESTION_COUNT = 1;
 
 const QuizIntentHandler = {
     canHandle(handlerInput) {
