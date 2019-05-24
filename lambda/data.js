@@ -21,7 +21,7 @@ module.exports.destinations = [
     "Los Angeles"
 ]
 
-module.exports.question_destination_match = [
+module.exports.questionDestinationMatch = [
     ["Budapest", "Hakone", "Taipei"],
     ["Mexico City", "Hakone", "Heidelberg", "Los Angeles"],
     ["Budapest", "Hakone", "Heidelberg"],
@@ -34,5 +34,3 @@ module.exports.question_destination_match = [
     ["Taipei", "Los Angeles"],
     ["Heidelberg", "Los Angeles"]
 ];
-
-// module.exports.questions = questions
