@@ -13,13 +13,13 @@ const QuizIntentHandler = {
         let currentQuizCount = 0
         let question = data.questions[currentQuizCount];
         let attrs = handlerInput.attributesManager.getSessionAttributes()
-        attrs['game_state'] = 'STARTED'
-        attrs['quiz_count'] = currentQuizCount
+        attrs.gameState = 'STARTED'
+        attrs.quizCount = currentQuizCount
         let scores = {}
         data.destinations.foreach(function(destination){
             scores[destination] = 0
         })
-        attrs['scores'] = scores
+        attrs.scores = scores
         
         var speechText = `Ok. Let's start it. ${question}`;
         return handlerInput.responseBuilder
