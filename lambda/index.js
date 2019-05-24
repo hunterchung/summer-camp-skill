@@ -4,6 +4,8 @@
 const Alexa = require('ask-sdk-core');
 let data = require('./data')
 
+const MAX_QUESTION_COUNT = 5;
+
 const QuizIntentHandler = {
     canHandle(handlerInput) {
         return handlerInput.requestEnvelope.request.type === 'IntentRequest'
@@ -30,16 +32,55 @@ const QuizIntentHandler = {
     }
 };
 
+function getTopDesitnation(destinationScores) {
+    var topDestination = '';
+    var topScore = -1;
+    destinationScores.forEach(function(destination, score, map) {
+        if (score > topScore) {
+            topDestination = destination;
+        }
+    });
+    
+    return topDestination;
+}
+
 const AnswerIntentHandler = {
     canHandle(handlerInput) {
         return handlerInput.requestEnvelope.request.type === 'IntentRequest'
             && ['AMAZON.YesIntent', 'AMAZON.NoIntent'].includes( handlerInput.requestEnvelope.request.intent.name);
     },
     handle(handlerInput) {
-        var speechText = "Based on my calculation. You'll enjoy Hakone for your next vacation. Thanks for playing Qoo Quiz.";
-        return handlerInput.responseBuilder
+        let attrs = handlerInput.attributesManager.getSessionAttributes();
+        let yesDestinations = data.questionDestinationMatch[attrs.quizCount];
+        if (handlerInput.requestEnvelope.request.intent.name === 'AMAZON.YesIntent'){
+            yesDestinations.forEach(function(destination){
+                attrs.scores[destination] += 1;
+            });
+        } else {
+            data.destinations.forEach(function(destination) {
+               if(!yesDestinations.includes(destination)) {
+                   attrs.scores[destination] += 1;
+               }
+            });
+        }
+        
+        attrs.quizCount += 1;
+        
+        if (attrs.quizCount >= MAX_QUESTION_COUNT) {
+            let topDestination = getTopDesitnation(attrs.scores);
+            let speechText = `Based on my calculation. You'll enjoy ${topDestination} for your next vacation. Thanks for playing Qoo Quiz.`;
+            return handlerInput.responseBuilder
             .speak(speechText)
             .getResponse();
+        } else {
+            let question = data.questions[attrs.quizCount];
+            let speechText = `Next question. ${question}`;
+            
+            return handlerInput.responseBuilder
+            .speak(speechText)
+            .reprompt(question)
+            .getResponse();
+        }
     }
 };
 
