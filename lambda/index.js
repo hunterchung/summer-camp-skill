@@ -17,9 +17,9 @@ const QuizIntentHandler = {
         attrs.quizCount = currentQuizCount
         let scores = {}
         console.log(`destinations is ${typeof data.destinations[0]}`)
-        data.destinations.foreach(function(destination){
+        data.destinations.prototype.foreach(function(destination){
             scores[destination] = 0
-        })
+        });
         attrs.scores = scores
         
         var speechText = `Ok. Let's start it. ${question}`;
