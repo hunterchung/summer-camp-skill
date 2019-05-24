@@ -16,6 +16,7 @@ const QuizIntentHandler = {
         attrs.gameState = 'STARTED'
         attrs.quizCount = currentQuizCount
         let scores = {}
+        console.log(`destinations is ${typeof data.destinations}`)
         data.destinations.foreach(function(destination){
             scores[destination] = 0
         })
