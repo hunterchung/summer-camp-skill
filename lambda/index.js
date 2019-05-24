@@ -12,14 +12,13 @@ const QuizIntentHandler = {
     handle(handlerInput) {
         let currentQuizCount = 0
         let question = data.questions[currentQuizCount];
-        let attrs = handlerInput.attributesManager.getSessionAttributes()
-        attrs.gameState = 'STARTED'
-        attrs.quizCount = currentQuizCount
-        let scores = {}
-        console.log(`destinations is ${typeof data.destinations[0]}`)
+        let attrs = handlerInput.attributesManager.getSessionAttributes();
+        attrs.gameState = 'STARTED';
+        attrs.quizCount = currentQuizCount;
         
+        let scores = {}
         data.destinations.forEach(function(destination){
-            scores[destination] = 0
+            scores[destination] = 0;
         });
         attrs.scores = scores
         
@@ -31,26 +30,13 @@ const QuizIntentHandler = {
     }
 };
 
-const YesIntentHandler = {
+const AnswerIntentHandler = {
     canHandle(handlerInput) {
         return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.YesIntent';
+            && ['AMAZON.YesIntent', 'AMAZON.NoIntent'].includes( handlerInput.requestEnvelope.request.intent.name);
     },
     handle(handlerInput) {
         var speechText = "Based on my calculation. You'll enjoy Hakone for your next vacation. Thanks for playing Qoo Quiz.";
-        return handlerInput.responseBuilder
-            .speak(speechText)
-            .getResponse();
-    }
-};
-
-const NoIntentHandler = {
-    canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.NoIntent';
-    },
-    handle(handlerInput) {
-        var speechText = "Based on my calculation. You'll enjoy Mexico City for your next vacation. Thanks for playing Qoo Quiz.";
         return handlerInput.responseBuilder
             .speak(speechText)
             .getResponse();
@@ -163,8 +149,7 @@ const ErrorHandler = {
 exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
         QuizIntentHandler,
-        YesIntentHandler,
-        NoIntentHandler,
+        AnswerIntentHandler,
         LaunchRequestHandler,
         HelloWorldIntentHandler,
         HelpIntentHandler,
