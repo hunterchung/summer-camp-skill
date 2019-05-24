@@ -4,7 +4,7 @@
 const Alexa = require('ask-sdk-core');
 let data = require('./data')
 
-const MAX_QUESTION_COUNT = 5;
+const MAX_QUESTION_COUNT = 3;
 
 const QuizIntentHandler = {
     canHandle(handlerInput) {
@@ -54,11 +54,11 @@ const AnswerIntentHandler = {
         let attrs = handlerInput.attributesManager.getSessionAttributes();
         let yesDestinations = data.questionDestinationMatch[attrs.quizCount];
         if (handlerInput.requestEnvelope.request.intent.name === 'AMAZON.YesIntent'){
-            yesDestinations.forEach(function(destination){
+            yesDestinations.forEach((destination) => {
                 attrs.scores[destination] += 1;
             });
         } else {
-            data.destinations.forEach(function(destination) {
+            data.destinations.forEach((destination) => {
                if(!yesDestinations.includes(destination)) {
                    attrs.scores[destination] += 1;
                }
