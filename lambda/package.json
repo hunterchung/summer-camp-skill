@@ -1,12 +1,12 @@
 {
-  "name": "hello-world",
+  "name": "qoo-quiz",
   "version": "0.9.0",
-  "description": "alexa utility for quickly building skills",
+  "description": "Find your next vacation destination",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Amazon Alexa",
+  "author": "Hunter Chung",
   "license": "ISC",
   "dependencies": {
     "ask-sdk-core": "^2.0.7",
