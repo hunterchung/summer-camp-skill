@@ -14,14 +14,17 @@ const QuizIntentHandler = {
     handle(handlerInput) {
         let currentQuizCount = 0
         let question = data.questions[currentQuizCount];
-        let attrs = handlerInput.attributesManager.getSessionAttributes();
-        attrs.gameState = 'STARTED';
-        attrs.quizCount = currentQuizCount;
         
+        // Initialize scores.
         let scores = {}
         data.destinations.forEach(function(destination){
             scores[destination] = 0;
         });
+        
+        // Initialize attributes.
+        let attrs = handlerInput.attributesManager.getSessionAttributes();
+        attrs.gameState = 'STARTED';
+        attrs.quizCount = currentQuizCount;
         attrs.scores = scores
         
         var speechText = `Ok. Let's start it. ${question}`;
@@ -43,6 +46,16 @@ function getTopDesitnation(destinationScores) {
     });
     
     return topDestination;
+}
+
+function scoredDestinations(intentName, questionIndex) {
+    let yesDestinations = data.questionDestinationMatch[questionIndex];
+    
+    if (intentName === 'AMAZON.YesIntent'){
+        return yesDestinations;
+    } else {
+        return data.destinations.filter(destination => !yesDestinations.includes(destination));
+    }
 }
 
 const AnswerIntentHandler = {
