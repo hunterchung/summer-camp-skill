@@ -35,7 +35,8 @@ const QuizIntentHandler = {
 function getTopDesitnation(destinationScores) {
     var topDestination = '';
     var topScore = -1;
-    destinationScores.forEach(function(destination, score, map) {
+    Object.keys(destinationScores).forEach((destination) => {
+        let score = destinationScores[destination];
         if (score > topScore) {
             topDestination = destination;
         }
