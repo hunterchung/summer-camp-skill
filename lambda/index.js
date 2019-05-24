@@ -69,7 +69,7 @@ const AnswerIntentHandler = {
         
         if (attrs.quizCount >= MAX_QUESTION_COUNT) {
             let topDestination = getTopDesitnation(attrs.scores);
-            let speechText = `Based on my calculation. You'll enjoy <voice name="Mizuki"> ${topDestination}</voice> for your next vacation. Thanks for playing Qoo Quiz.`;
+            let speechText = `Based on my calculation. You'll enjoy <voice name="Mizuki">Hakone</voice> for your next vacation. Thanks for playing Qoo Quiz.`;
             return handlerInput.responseBuilder
             .speak(speechText)
             .getResponse();
