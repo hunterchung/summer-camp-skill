@@ -4,7 +4,7 @@
 const Alexa = require('ask-sdk-core');
 let data = require('./data')
 
-const MAX_QUESTION_COUNT = 1;
+const MAX_QUESTION_COUNT = 3;
 
 const QuizIntentHandler = {
     canHandle(handlerInput) {
@@ -69,7 +69,7 @@ const AnswerIntentHandler = {
         
         if (attrs.quizCount >= MAX_QUESTION_COUNT) {
             let topDestination = getTopDesitnation(attrs.scores);
-            let speechText = `Based on my calculation. You'll enjoy <lang xml:lang="ja-JP">Hakone</lang> for your next vacation. Thanks for playing Qoo Quiz.`;
+            let speechText = `Based on my calculation. You'll enjoy ${topDestination} for your next vacation. Thanks for playing Qoo Quiz.`;
             return handlerInput.responseBuilder
             .speak(speechText)
             .getResponse();
