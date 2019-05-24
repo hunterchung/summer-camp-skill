@@ -12,7 +12,7 @@ const QuizIntentHandler = {
     handle(handlerInput) {
         let currentQuizCount = 0
         let question = data.questions[currentQuizCount];
-        let attrs = handlerInput.attributesManager.sessionAttributes
+        let attrs = handlerInput.attributesManager.getSessionAttributes()
         attrs['game_state'] = 'STARTED'
         attrs['quiz_count'] = currentQuizCount
         let scores = {}
