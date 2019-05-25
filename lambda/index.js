@@ -21,7 +21,7 @@ const QuizIntentHandler = {
             scores[destination] = 0;
         });
         
-        // Initialize attributes.
+        // Initialize session attributes.
         let attrs = handlerInput.attributesManager.getSessionAttributes();
         attrs.gameState = 'STARTED';
         attrs.quizCount = currentQuizCount;
@@ -35,6 +35,9 @@ const QuizIntentHandler = {
     }
 };
 
+/** 
+ * Find the top scored destination. If there is a tie, return an arbitary one.
+ **/
 function getTopDesitnation(destinationScores) {
     var topDestination = '';
     var topScore = -1;
@@ -48,13 +51,29 @@ function getTopDesitnation(destinationScores) {
     return topDestination;
 }
 
-function scoredDestinations(intentName, questionIndex) {
-    let yesDestinations = data.questionDestinationMatch[questionIndex];
+/**
+ * Based on the answer, return the destinations to be scored.
+ **/
+function getScoredDestinations(intentName, questionIndex) {
+    let matchedDestinations = data.questionDestinationMatch[questionIndex];
     
     if (intentName === 'AMAZON.YesIntent'){
-        return yesDestinations;
+        return matchedDestinations;
     } else {
-        return data.destinations.filter(destination => !yesDestinations.includes(destination));
+        return data.destinations.filter(destination => !matchedDestinations.includes(destination));
+    }
+}
+
+/**
+ * If already asked enough questions, return the speech with result, otherwise, ask a new question.
+ **/
+function getNextQuestionSpeech(currentQuizCount, destinationScores) {
+    if (currentQuizCount >= MAX_QUESTION_COUNT) {
+        let topDestination = getTopDesitnation(destinationScores);
+        return `Based on my calculation. You'll enjoy ${topDestination} for your next vacation. Thanks for playing Qoo Quiz.`;
+    } else {
+        let question = data.questions[currentQuizCount];
+        return `Next question. ${question}`;
     }
 }
 
@@ -65,36 +84,16 @@ const AnswerIntentHandler = {
     },
     handle(handlerInput) {
         let attrs = handlerInput.attributesManager.getSessionAttributes();
-        let yesDestinations = data.questionDestinationMatch[attrs.quizCount];
-        if (handlerInput.requestEnvelope.request.intent.name === 'AMAZON.YesIntent'){
-            yesDestinations.forEach((destination) => {
-                attrs.scores[destination] += 1;
-            });
-        } else {
-            data.destinations.forEach((destination) => {
-               if(!yesDestinations.includes(destination)) {
-                   attrs.scores[destination] += 1;
-               }
-            });
-        }
-        
+        // Increment the scores for destinations.
+        let scoredDestinations = getScoredDestinations(handlerInput.requestEnvelope.request.intent.name, attrs.quizCount)
+        scoredDestinations.forEach(destination => attrs.scores[destination] += 1);
+        // Increment quiz count for asking the next question.
         attrs.quizCount += 1;
         
-        if (attrs.quizCount >= MAX_QUESTION_COUNT) {
-            let topDestination = getTopDesitnation(attrs.scores);
-            let speechText = `Based on my calculation. You'll enjoy ${topDestination} for your next vacation. Thanks for playing Qoo Quiz.`;
-            return handlerInput.responseBuilder
+        let speechText = getNextQuestionSpeech(attrs.quizCount, attrs.scores);
+        return handlerInput.responseBuilder
             .speak(speechText)
             .getResponse();
-        } else {
-            let question = data.questions[attrs.quizCount];
-            let speechText = `Next question. ${question}`;
-            
-            return handlerInput.responseBuilder
-            .speak(speechText)
-            .reprompt(question)
-            .getResponse();
-        }
     }
 };
 
