@@ -92,11 +92,20 @@ const AnswerIntentHandler = {
         // Increment quiz count for asking the next question.
         attrs.quizCount += 1;
         
-        let speechText = getNextQuestionSpeech(attrs.quizCount, attrs.scores);
-        console.log(`sppech: ${speechText}`);
-        return handlerInput.responseBuilder
-            .speak(speechText)
-            .getResponse();
+        if (attrs.quizCount >= MAX_QUESTION_COUNT) {
+            let topDestination = getTopDesitnation(attrs.scores);
+            let speechText = `Based on my calculation. You'll enjoy ${topDestination} for your next vacation. Thanks for playing Qoo Quiz.`;
+             return handlerInput.responseBuilder
+                .speak(speechText)
+                .getResponse();
+        } else {
+            let question = data.questions[attrs.quizCount];
+            let speechText = `Next question. ${question}`;
+             return handlerInput.responseBuilder
+                .speak(speechText)
+                .reprompt(speechText)
+                .getResponse();
+        }
     }
 };
 
