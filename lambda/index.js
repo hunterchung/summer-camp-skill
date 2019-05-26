@@ -1,6 +1,3 @@
-// This sample demonstrates handling intents from an Alexa skill using the Alexa Skills Kit SDK (v2).
-// Please visit https://alexa.design/cookbook for additional examples on implementing slots, dialog management,
-// session persistence, api calls, and more.
 const Alexa = require('ask-sdk-core');
 let data = require('./data')
 
@@ -21,7 +18,6 @@ const QuizIntentHandler = {
         
         // Initialize session attributes.
         let attrs = handlerInput.attributesManager.getSessionAttributes();
-        attrs.gameState = 'STARTED';
         attrs.quizCount = currentQuizCount;
         attrs.scores = scores
         
@@ -70,14 +66,14 @@ const AnswerIntentHandler = {
     },
     handle(handlerInput) {
         let attrs = handlerInput.attributesManager.getSessionAttributes();
+        
         // Increment the scores for destinations.
         let scoredDestinations = getScoredDestinations(handlerInput.requestEnvelope.request.intent.name, attrs.quizCount)
         console.log(`scored destinations: ${scoredDestinations}`);
         scoredDestinations.forEach(destination => attrs.scores[destination] += 1);
-        console.log(`scores: ${attrs.scores}`);
+        
         // Increment quiz count for asking the next question.
         attrs.quizCount += 1;
-        
         if (attrs.quizCount >= MAX_QUESTION_COUNT) {
             let topDestination = getTopDesitnation(attrs.scores);
             let speechText = `Based on my calculation. You'll enjoy ${topDestination} for your next vacation. Thanks for playing Qoo Quiz.`;
