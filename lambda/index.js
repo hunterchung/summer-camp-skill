@@ -86,11 +86,14 @@ const AnswerIntentHandler = {
         let attrs = handlerInput.attributesManager.getSessionAttributes();
         // Increment the scores for destinations.
         let scoredDestinations = getScoredDestinations(handlerInput.requestEnvelope.request.intent.name, attrs.quizCount)
+        console.log(`scored destinations: ${scoredDestinations}`);
         scoredDestinations.forEach(destination => attrs.scores[destination] += 1);
+        console.log(`scores: ${attrs.scores}`);
         // Increment quiz count for asking the next question.
         attrs.quizCount += 1;
         
         let speechText = getNextQuestionSpeech(attrs.quizCount, attrs.scores);
+        console.log(`sppech: ${speechText}`);
         return handlerInput.responseBuilder
             .speak(speechText)
             .getResponse();
