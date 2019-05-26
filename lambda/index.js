@@ -17,9 +17,7 @@ const QuizIntentHandler = {
         
         // Initialize scores.
         let scores = {}
-        data.destinations.forEach(function(destination){
-            scores[destination] = 0;
-        });
+        data.destinations.forEach(destination => scores[destination] = 0);
         
         // Initialize session attributes.
         let attrs = handlerInput.attributesManager.getSessionAttributes();
@@ -45,6 +43,7 @@ function getTopDesitnation(destinationScores) {
         let score = destinationScores[destination];
         if (score > topScore) {
             topDestination = destination;
+            topScore = score;
         }
     });
     
@@ -61,19 +60,6 @@ function getScoredDestinations(intentName, questionIndex) {
         return matchedDestinations;
     } else {
         return data.destinations.filter(destination => !matchedDestinations.includes(destination));
-    }
-}
-
-/**
- * If already asked enough questions, return the speech with result, otherwise, ask a new question.
- **/
-function getNextQuestionSpeech(currentQuizCount, destinationScores) {
-    if (currentQuizCount >= MAX_QUESTION_COUNT) {
-        let topDestination = getTopDesitnation(destinationScores);
-        return `Based on my calculation. You'll enjoy ${topDestination} for your next vacation. Thanks for playing Qoo Quiz.`;
-    } else {
-        let question = data.questions[currentQuizCount];
-        return `Next question. ${question}`;
     }
 }
 
