@@ -1,6 +1,6 @@
 module.exports.questions = [
     "Do you like hot spring?",
-    "Do you want to drive?",
+    "Do you like museum?",
     "Is air quality important to you?",
     "Do you want to have street food?",
     "Do you want to go to America?",
@@ -23,7 +23,7 @@ module.exports.destinations = [
 
 module.exports.questionDestinationMatch = [
     ["Budapest", "Hakone", "Taipei"],
-    ["Mexico City", "Hakone", "Heidelberg", "Los Angeles"],
+    ["Mexico City", "Los Angeles"],
     ["Budapest", "Hakone", "Heidelberg"],
     ["Mexico City", "Taipei"],
     ["Mexico City", "Los Angeles"],
