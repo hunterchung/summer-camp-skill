@@ -1,5 +1,5 @@
 const Alexa = require('ask-sdk-core');
-let data = require('./data')
+const Data = require('./data')
 
 const MAX_QUESTION_COUNT = 3;
 
@@ -9,18 +9,18 @@ const QuizIntentHandler = {
             && handlerInput.requestEnvelope.request.intent.name === 'QuizIntent';
     },
     handle(handlerInput) {
-        let currentQuizCount = 0
-        let question = data.questions[currentQuizCount];
-        
+        var currentQuizCount = 0
+        var question = Data.questions[currentQuizCount];
+
         // Initialize scores.
-        let scores = {}
-        data.destinations.forEach(destination => scores[destination] = 0);
-        
+        var scores = {}
+        Data.destinations.forEach(destination => scores[destination] = 0);
+
         // Initialize session attributes.
-        let attrs = handlerInput.attributesManager.getSessionAttributes();
+        var attrs = handlerInput.attributesManager.getSessionAttributes();
         attrs.quizCount = currentQuizCount;
         attrs.scores = scores
-        
+
         var speechText = `Ok. Let's start it. ${question}`;
         return handlerInput.responseBuilder
             .speak(speechText)
@@ -29,20 +29,20 @@ const QuizIntentHandler = {
     }
 };
 
-/** 
+/**
  * Find the top scored destination. If there is a tie, return an arbitary one.
  **/
 function getTopDesitnation(destinationScores) {
     var topDestination = '';
     var topScore = -1;
     Object.keys(destinationScores).forEach((destination) => {
-        let score = destinationScores[destination];
+        var score = destinationScores[destination];
         if (score > topScore) {
             topDestination = destination;
             topScore = score;
         }
     });
-    
+
     return topDestination;
 }
 
@@ -50,12 +50,12 @@ function getTopDesitnation(destinationScores) {
  * Based on the answer, return the destinations to be scored.
  **/
 function getScoredDestinations(intentName, questionIndex) {
-    let matchedDestinations = data.questionDestinationMatch[questionIndex];
-    
+    var matchedDestinations = Data.questionDestinationMatch[questionIndex];
+
     if (intentName === 'AMAZON.YesIntent'){
         return matchedDestinations;
     } else {
-        return data.destinations.filter(destination => !matchedDestinations.includes(destination));
+        return Data.destinations.filter(destination => !matchedDestinations.includes(destination));
     }
 }
 
@@ -65,24 +65,24 @@ const AnswerIntentHandler = {
             && ['AMAZON.YesIntent', 'AMAZON.NoIntent'].includes( handlerInput.requestEnvelope.request.intent.name);
     },
     handle(handlerInput) {
-        let attrs = handlerInput.attributesManager.getSessionAttributes();
-        
+        var attrs = handlerInput.attributesManager.getSessionAttributes();
+
         // Increment the scores for destinations.
-        let scoredDestinations = getScoredDestinations(handlerInput.requestEnvelope.request.intent.name, attrs.quizCount)
+        var scoredDestinations = getScoredDestinations(handlerInput.requestEnvelope.request.intent.name, attrs.quizCount)
         console.log(`scored destinations: ${scoredDestinations}`);
         scoredDestinations.forEach(destination => attrs.scores[destination] += 1);
-        
+
         // Increment quiz count for asking the next question.
         attrs.quizCount += 1;
         if (attrs.quizCount >= MAX_QUESTION_COUNT) {
-            let topDestination = getTopDesitnation(attrs.scores);
-            let speechText = `Based on my calculation. You'll enjoy ${topDestination} for your next vacation. Thanks for playing Qoo Quiz.`;
+            var topDestination = getTopDesitnation(attrs.scores);
+            var speechText = `Based on my calculation. You'll enjoy ${topDestination} for your next vacation. Thanks for playing Qoo Quiz.`;
              return handlerInput.responseBuilder
                 .speak(speechText)
                 .getResponse();
         } else {
-            let question = data.questions[attrs.quizCount];
-            let speechText = `Next question. ${question}`;
+            var question = Data.questions[attrs.quizCount];
+            var speechText = `Next question. ${question}`;
              return handlerInput.responseBuilder
                 .speak(speechText)
                 .reprompt(speechText)
