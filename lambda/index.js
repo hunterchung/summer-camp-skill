@@ -1,5 +1,5 @@
 const Alexa = require('ask-sdk-core');
-let data = require('./data')
+const Data = require('./data')
 
 
 const QuizIntentHandler = {
@@ -8,7 +8,7 @@ const QuizIntentHandler = {
             && handlerInput.requestEnvelope.request.intent.name === 'QuizIntent';
     },
     handle(handlerInput) {
-        let question = data.questions[0];
+        var question = Data.questions[0];
         var speechText = `Ok. Let's start it. ${question}`;
         return handlerInput.responseBuilder
             .speak(speechText)
