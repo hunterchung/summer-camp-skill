@@ -31,6 +31,9 @@ const QuizIntentHandler = {
 
 /**
  * Find the top scored destination. If there is a tie, return an arbitary one.
+ *
+ * @param {Object} destinationScores Object with desitions as property names and scores as values.
+ * @return {String} The top destination.
  **/
 function getTopDesitnation(destinationScores) {
     var topDestination = '';
@@ -48,6 +51,10 @@ function getTopDesitnation(destinationScores) {
 
 /**
  * Based on the answer, return the destinations to be scored.
+ *
+ * @param {String} intentName The intent name. Expect AMAZON.YesIntent or AMAZON.NoIntent.
+ * @param {Number} questionIndex The question index.
+ * @return {Array} A list of scored destination.
  **/
 function getScoredDestinations(intentName, questionIndex) {
     var matchedDestinations = Data.questionDestinationMatch[questionIndex];
