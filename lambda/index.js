@@ -9,19 +9,15 @@ const QuizIntentHandler = {
             && handlerInput.requestEnvelope.request.intent.name === 'QuizIntent';
     },
     handle(handlerInput) {
-        var currentQuizCount = 0
-        var question = Data.questions[currentQuizCount];
+        // Get the question.
 
-        // Initialize scores.
-        var scores = {}
-        Data.destinations.forEach(destination => scores[destination] = 0);
+        // Initialize scores for all destinations.
 
-        // Initialize session attributes.
-        var attrs = handlerInput.attributesManager.getSessionAttributes();
-        attrs.quizCount = currentQuizCount;
-        attrs.scores = scores
+        // Store data in session attributes for the next requests.
 
-        var speechText = `Ok. Let's start it. ${question}`;
+        // Create the speech text
+        var speechText = '';
+
         return handlerInput.responseBuilder
             .speak(speechText)
             .reprompt(question)
@@ -36,17 +32,7 @@ const QuizIntentHandler = {
  * @return {String} The top destination.
  **/
 function getTopDesitnation(destinationScores) {
-    var topDestination = '';
-    var topScore = -1;
-    Object.keys(destinationScores).forEach((destination) => {
-        var score = destinationScores[destination];
-        if (score > topScore) {
-            topDestination = destination;
-            topScore = score;
-        }
-    });
-
-    return topDestination;
+    return ''
 }
 
 /**
@@ -57,44 +43,24 @@ function getTopDesitnation(destinationScores) {
  * @return {Array} A list of scored destination.
  **/
 function getScoredDestinations(intentName, questionIndex) {
-    var matchedDestinations = Data.questionDestinationMatch[questionIndex];
-
-    if (intentName === 'AMAZON.YesIntent'){
-        return matchedDestinations;
-    } else {
-        return Data.destinations.filter(destination => !matchedDestinations.includes(destination));
-    }
+    return []
 }
 
 const AnswerIntentHandler = {
     canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && ['AMAZON.YesIntent', 'AMAZON.NoIntent'].includes( handlerInput.requestEnvelope.request.intent.name);
+        // Handle both AMAZON.YesIntent, AMAZON.NoIntent.
+        return true
     },
     handle(handlerInput) {
-        var attrs = handlerInput.attributesManager.getSessionAttributes();
+        // Get session attributes.
 
-        // Increment the scores for destinations.
-        var scoredDestinations = getScoredDestinations(handlerInput.requestEnvelope.request.intent.name, attrs.quizCount)
-        console.log(`scored destinations: ${scoredDestinations}`);
-        scoredDestinations.forEach(destination => attrs.scores[destination] += 1);
+        // based on the answer, increment the scores for the destinations.
 
         // Increment quiz count for asking the next question.
-        attrs.quizCount += 1;
-        if (attrs.quizCount >= MAX_QUESTION_COUNT) {
-            var topDestination = getTopDesitnation(attrs.scores);
-            var speechText = `Based on my calculation. You'll enjoy ${topDestination} for your next vacation. Thanks for playing Qoo Quiz.`;
-             return handlerInput.responseBuilder
-                .speak(speechText)
-                .getResponse();
-        } else {
-            var question = Data.questions[attrs.quizCount];
-            var speechText = `Next question. ${question}`;
-             return handlerInput.responseBuilder
-                .speak(speechText)
-                .reprompt(speechText)
-                .getResponse();
-        }
+
+        // Check if the quiz count reach the MAX limit.
+        // If true, construct a speech text for destination recommendation.
+        // If false, ask the next quetion.
     }
 };
 
